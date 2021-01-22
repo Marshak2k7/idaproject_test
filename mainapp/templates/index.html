@@ -1,0 +1,13 @@
+{% load image_name %}
+<h1>Список изображений</h1>
+<ul>
+    {% for photo in object_list %}
+        <a href="{% url 'image_update' photo.id %}">
+            {{ photo.image_file|image_name }} <br>
+        </a>
+    {% empty %}
+        <p>Нет доступных изображений</p>
+    {% endfor %}
+
+</ul>
+<a href="{% url 'create_image' %}">Добавить изображение</a>

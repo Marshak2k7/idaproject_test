@@ -1,0 +1,18 @@
+{% load image_name %}
+<a href="{% url 'list' %}">Назад к списку</a>
+<br>
+<h1>{{ object.image_file|image_name }}</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Изменить">
+</form>
+
+<br>
+{% if object.changed_image_file %}
+    <img src="{{ object.changed_image_file.url }}">
+{% else %}
+    <img src="{{ object.image_file.url }}">
+{% endif %}
+
+
