@@ -18,6 +18,7 @@ class Photo(models.Model):
     changed_image_file = models.ImageField(upload_to='images', blank=True)
 
     def save(self, *args, **kwargs, ):
+        global changed_img
         if self.image_url and not self.image_file:
             img_temp = NamedTemporaryFile(delete=True)
             img_temp.write(urlopen(self.image_url).read())
@@ -25,11 +26,20 @@ class Photo(models.Model):
             self.image_file.save(f"image_{self.pk}.jpeg", File(img_temp))
 
         img = Image.open(self.image_file)
+        if self.changed_image_file:
+            changed_img = Image.open(self.changed_image_file)
         if self.width == 0:
             self.width = img.width
         if self.height == 0:
             self.height = img.height
-
+        if self.height == img.height or self.height == changed_img.height:
+            basewidth = self.width
+            wpercent = (basewidth / float(img.size[0]))
+            self.height = int((float(img.size[1]) * float(wpercent)))
+        if self.width == img.width or self.width == changed_img.width:
+            baseheight = self.height
+            hpercent = (baseheight / float(img.size[1]))
+            self.width = int((float(img.size[0]) * float(hpercent)))
         new_img = img.convert('RGB')
         resized_new_image = new_img.resize((self.width, self.height), Image.ANTIALIAS)
         filestream = BytesIO()
