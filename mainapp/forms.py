@@ -35,7 +35,7 @@ class ImageChangeForm(forms.ModelForm):
             raise ValidationError('Поле не должно быть пустым, оставьте значение по умолчанию или введите новое',
                                   code='empty width')
         if width < 0:
-            raise ValidationError('Поле не должно быть отрицательным или равно нулю', code='zero or negative width')
+            raise ValidationError('Поле не должно быть отрицательным', code='zero or negative width')
         return width
 
     def clean_height(self):
@@ -44,5 +44,5 @@ class ImageChangeForm(forms.ModelForm):
             raise ValidationError('Поле не должно быть пустым, оставьте значение по умолчанию или введите новое',
                                   code='empty height')
         if height < 0:
-            raise ValidationError('Поле не должно быть отрицательным или равно нулю', code='zero or negative height')
+            raise ValidationError('Поле не должно быть отрицательным', code='zero or negative height')
         return height
